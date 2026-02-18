@@ -2,11 +2,15 @@
 
 A React Native mobile application for running the Gemma 3N model locally on your device.
 
+
 ## Features
 
 - Local Gemma 3N model execution
 - Image selection and processing
 - Model download and management
+
+## Preview
+![](https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/appScreenShot.png)
 
 ## Prerequisites
 

@@ -16,7 +16,6 @@ A React Native mobile application for running the Gemma 3N model locally on your
 
 - Node.js >= 20
 - React Native development environment ([Setup Guide](https://reactnative.dev/docs/set-up-your-environment))
-- For iOS: Xcode and CocoaPods
 - For Android: Android Studio and JDK 17
 
 ## Installation
@@ -25,7 +24,7 @@ A React Native mobile application for running the Gemma 3N model locally on your
 2. Install dependencies:
 
 ```bash
-npm install
+yarn install
 ```
 
 ## Running the App
@@ -33,22 +32,14 @@ npm install
 ### Android
 
 ```bash
-npm run android
+npx react-native run-android
 ```
 
-## Development
-
-Start the Metro bundler:
-
-```bash
-npm start
-```
 
 ## Project Structure
 
 - `/android` - Android native code
-- `/ios` - iOS native code
-- `/src` - Application source code (if applicable)
+- `/src` - Application source code 
 
 ## Tech Stack
 

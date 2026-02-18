@@ -9,6 +9,7 @@ import {
   StyleSheet,
   StatusBar,
   Animated,
+  Keyboard,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { GemmaInference } from './src/inference/GemmaInference';
@@ -165,6 +166,9 @@ const App = () => {
     if (!input.trim() && !selectedImage) return;
     if (!modelReady) return;
 
+    // Dismiss keyboard
+    Keyboard.dismiss();
+
     const userMsg: Message = {
       id: Date.now().toString(),
       text: input,
@@ -220,8 +224,18 @@ const App = () => {
       await saveMessages(finalMessages);
     } catch (error) {
       console.error('Generation failed:', error);
-      // Remove the placeholder message on error
-      setMessages(updatedMessages);
+
+      // Check if this was a user cancellation
+      const isCancelled = error instanceof Error && error.message.includes('CANCELLED');
+
+      if (isCancelled && currentText) {
+        // Keep the partial response when user stops generation
+        const finalMessages = [...updatedMessages, { ...aiMsg, text: currentText }];
+        await saveMessages(finalMessages);
+      } else {
+        // Remove the placeholder message on real errors
+        setMessages(updatedMessages);
+      }
     } finally {
       setLoading(false);
     }

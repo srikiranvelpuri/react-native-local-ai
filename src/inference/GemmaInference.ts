@@ -38,6 +38,15 @@ export class GemmaInference {
     }
   }
 
+  private static filterSpecialTokens(text: string): string {
+    // Filter out common special tokens that shouldn't be displayed
+    return text.replace(/<end_of_turn>/g, '')
+               .replace(/<\/s>/g, '')
+               .replace(/<eos>/g, '')
+               .replace(/<\|endoftext\|>/g, '')
+               .replace(/<start_of_turn>/g, '');
+  }
+
   static async generateStreaming(
     prompt: string,
     onToken: (token: string) => void,
@@ -65,7 +74,18 @@ export class GemmaInference {
         'onGenerateToken',
         (token: string) => {
           if (token) {
-            onToken(token);
+            // Check if we've reached end of turn - stop streaming
+            if (token.includes('<end_of_turn>')) {
+              console.log('End of turn detected, ending stream');
+              this.removeTokenListener();
+              return;
+            }
+
+            // Filter out special tokens before passing to callback
+            const filteredToken = this.filterSpecialTokens(token);
+            if (filteredToken) {
+              onToken(filteredToken);
+            }
           }
         }
       );

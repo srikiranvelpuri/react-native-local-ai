@@ -15,6 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class GemmaModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -88,6 +90,8 @@ class GemmaModule(reactContext: ReactApplicationContext) :
                     val session = LlmInferenceSession.createFromOptions(model!!, sessionOptions)
                     currentSession = session
 
+                    val latch = CountDownLatch(1)
+
                     session.use {
                         it.addQueryChunk(prompt)
 
@@ -95,7 +99,15 @@ class GemmaModule(reactContext: ReactApplicationContext) :
                         it.generateResponseAsync { partialResult: String, isFinal: Boolean ->
                             // Send each token chunk to React Native
                             sendEvent("onGenerateToken", partialResult)
+
+                            // Signal completion when final token arrives
+                            if (isFinal) {
+                                latch.countDown()
+                            }
                         }
+
+                        // Wait for generation to complete (with 5 minute timeout)
+                        latch.await(5, TimeUnit.MINUTES)
                     }
                 }
                 promise.resolve("Generation completed")
@@ -160,6 +172,8 @@ class GemmaModule(reactContext: ReactApplicationContext) :
                     val session = LlmInferenceSession.createFromOptions(model!!, sessionOptions)
                     currentSession = session
 
+                    val latch = CountDownLatch(1)
+
                     session.use {
                         it.addQueryChunk(prompt)
                         it.addImage(mpImage)
@@ -167,7 +181,15 @@ class GemmaModule(reactContext: ReactApplicationContext) :
                         // Stream response token by token
                         it.generateResponseAsync { partialResult: String, isFinal: Boolean ->
                             sendEvent("onGenerateToken", partialResult)
+
+                            // Signal completion when final token arrives
+                            if (isFinal) {
+                                latch.countDown()
+                            }
                         }
+
+                        // Wait for generation to complete (with 5 minute timeout)
+                        latch.await(5, TimeUnit.MINUTES)
                     }
                 }
 

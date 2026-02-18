@@ -1,18 +1,21 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter, type NativeModule } from 'react-native';
 import RNFS from 'react-native-fs';
 
-interface GemmaModuleInterface {
+interface GemmaModuleInterface extends NativeModule {
   loadModel(modelPath: string): Promise<string>;
   generate(prompt: string): Promise<string>;
   generateWithImage(prompt: string, imagePath: string): Promise<string>;
+  stopGeneration(): Promise<string>;
   unloadModel(): Promise<string>;
 }
 
 const { GemmaModule } = NativeModules as { GemmaModule: GemmaModuleInterface };
+const gemmaEmitter = new NativeEventEmitter(GemmaModule);
 
 export class GemmaInference {
   private static modelPath: string = '';
   private static isInitialized: boolean = false;
+  private static currentSubscription: any = null;
 
   static async initialize(modelPath: string): Promise<void> {
     try {
@@ -35,10 +38,11 @@ export class GemmaInference {
     }
   }
 
-  static async generate(
+  static async generateStreaming(
     prompt: string,
+    onToken: (token: string) => void,
     imagePath?: string | null,
-  ): Promise<string> {
+  ): Promise<void> {
     if (!this.isInitialized) {
       throw new Error('Model not initialized. Call initialize() first.');
     }
@@ -47,10 +51,23 @@ export class GemmaInference {
       throw new Error('Prompt cannot be empty');
     }
 
+    // Remove previous subscription if exists
+    this.removeTokenListener();
+
     try {
       console.log(
         'Generating response for:',
         prompt.substring(0, 50) + '...',
+      );
+
+      // Set up streaming listener
+      this.currentSubscription = gemmaEmitter.addListener(
+        'onGenerateToken',
+        (token: string) => {
+          if (token) {
+            onToken(token);
+          }
+        }
       );
 
       if (imagePath?.trim()) {
@@ -60,14 +77,37 @@ export class GemmaInference {
         }
 
         const cleanPath = this.normalizePath(imagePath);
-        return await GemmaModule.generateWithImage(prompt, cleanPath);
+        await GemmaModule.generateWithImage(prompt, cleanPath);
+      } else {
+        await GemmaModule.generate(prompt);
       }
 
-      return await GemmaModule.generate(prompt);
+      // Clean up listener after generation completes
+      this.removeTokenListener();
     } catch (error) {
+      this.removeTokenListener();
       const message = error instanceof Error ? error.message : String(error);
       console.error('Generation failed:', message);
       throw new Error(`Generation failed: ${message}`);
+    }
+  }
+
+  static removeTokenListener(): void {
+    if (this.currentSubscription) {
+      this.currentSubscription.remove();
+      this.currentSubscription = null;
+    }
+  }
+
+  static async stopGeneration(): Promise<void> {
+    try {
+      await GemmaModule.stopGeneration();
+      this.removeTokenListener();
+      console.log('Generation stopped successfully');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Failed to stop generation:', message);
+      throw error;
     }
   }
 

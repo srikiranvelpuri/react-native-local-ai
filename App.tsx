@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  ActivityIndicator,
   StatusBar,
+  Animated,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { GemmaInference } from './src/inference/GemmaInference';
@@ -27,6 +27,54 @@ import {
 import { darkTheme } from './src/utils/theme';
 
 const cameraIcon = require('./assets/camera.png');
+
+const ThinkingIndicator = () => {
+  const opacity1 = useRef(new Animated.Value(0.3)).current;
+  const opacity2 = useRef(new Animated.Value(0.3)).current;
+  const opacity3 = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    const animate = (animValue: Animated.Value, delay: number) => {
+      return Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(animValue, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+          Animated.timing(animValue, {
+            toValue: 0.3,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+    };
+
+    const anim1 = animate(opacity1, 0);
+    const anim2 = animate(opacity2, 200);
+    const anim3 = animate(opacity3, 400);
+
+    anim1.start();
+    anim2.start();
+    anim3.start();
+
+    return () => {
+      anim1.stop();
+      anim2.stop();
+      anim3.stop();
+    };
+  }, [opacity1, opacity2, opacity3]);
+
+  return (
+    <View style={styles.thinkingContainer}>
+      <Animated.View style={[styles.thinkingDot, { opacity: opacity1 }]} />
+      <Animated.View style={[styles.thinkingDot, { opacity: opacity2 }]} />
+      <Animated.View style={[styles.thinkingDot, { opacity: opacity3 }]} />
+    </View>
+  );
+};
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -128,23 +176,52 @@ const App = () => {
     setMessages(updatedMessages);
     await saveMessages(updatedMessages);
 
+    const promptText = input;
+    const imageUri = selectedImage;
     setInput('');
     setSelectedImage(null);
     setLoading(true);
 
-    try {
-      const response = await GemmaInference.generate(input, selectedImage);
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        text: response,
-        sender: 'ai',
-      };
+    // Create placeholder AI message for streaming
+    const aiMsgId = (Date.now() + 1).toString();
+    const aiMsg: Message = {
+      id: aiMsgId,
+      text: '',
+      sender: 'ai',
+    };
 
-      const finalMessages = [...updatedMessages, aiMsg];
-      setMessages(finalMessages);
+    let currentText = '';
+    const messagesWithAI = [...updatedMessages, aiMsg];
+    setMessages(messagesWithAI);
+
+    try {
+      await GemmaInference.generateStreaming(
+        promptText,
+        (token: string) => {
+          // Append each token as it arrives
+          currentText += token;
+          setMessages(prev => {
+            const updated = [...prev];
+            const aiMessageIndex = updated.findIndex(m => m.id === aiMsgId);
+            if (aiMessageIndex !== -1) {
+              updated[aiMessageIndex] = {
+                ...updated[aiMessageIndex],
+                text: currentText,
+              };
+            }
+            return updated;
+          });
+        },
+        imageUri
+      );
+
+      // Save final messages after streaming completes
+      const finalMessages = [...updatedMessages, { ...aiMsg, text: currentText }];
       await saveMessages(finalMessages);
     } catch (error) {
       console.error('Generation failed:', error);
+      // Remove the placeholder message on error
+      setMessages(updatedMessages);
     } finally {
       setLoading(false);
     }
@@ -153,6 +230,15 @@ const App = () => {
   const retryDownload = () => {
     setDownloadError(null);
     initModel();
+  };
+
+  const stopGeneration = async () => {
+    try {
+      await GemmaInference.stopGeneration();
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to stop generation:', error);
+    }
   };
 
   return (
@@ -198,10 +284,15 @@ const App = () => {
               </Text>
             </View>
           )}
+          ListFooterComponent={
+            loading ? (
+              <View style={[styles.message, styles.aiMsg, styles.thinkingMessage]}>
+                <ThinkingIndicator />
+              </View>
+            ) : null
+          }
           contentContainerStyle={styles.messageList}
         />
-
-        {loading && <ActivityIndicator size="large" color={darkTheme.primary} />}
 
         <View style={styles.inputContainer}>
           {selectedImage && (
@@ -229,16 +320,25 @@ const App = () => {
                 source={cameraIcon}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={sendMessage}
-              style={[
-                styles.sendBtn,
-                (!modelReady || loading) && styles.sendBtnDisabled,
-              ]}
-              disabled={loading || !modelReady}
-            >
-              <Text style={styles.sendText}>Send</Text>
-            </TouchableOpacity>
+            {loading ? (
+              <TouchableOpacity
+                onPress={stopGeneration}
+                style={styles.stopBtn}
+              >
+                <Text style={styles.stopText}>Stop</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={sendMessage}
+                style={[
+                  styles.sendBtn,
+                  !modelReady && styles.sendBtnDisabled,
+                ]}
+                disabled={!modelReady}
+              >
+                <Text style={styles.sendText}>Send</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -371,6 +471,32 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 15,
+  },
+  stopBtn: {
+    backgroundColor: darkTheme.danger,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  stopText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 15,
+  },
+  thinkingMessage: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  thinkingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  thinkingDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: darkTheme.textSecondary,
   },
 });
 

@@ -10,6 +10,7 @@ import {
   StatusBar,
   Animated,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { GemmaInference } from './src/inference/GemmaInference';
@@ -88,6 +89,7 @@ const App = () => {
   const [bytesWritten, setBytesWritten] = useState(0);
   const [totalBytes, setTotalBytes] = useState(0);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -153,6 +155,15 @@ const App = () => {
     loadMessages();
     initModel();
   }, [initModel, loadMessages]);
+
+  useEffect(() => {
+    // Scroll to end when messages change
+    if (messages.length > 0 && flatListRef.current) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
 
   const pickImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, response => {
@@ -255,6 +266,28 @@ const App = () => {
     }
   };
 
+  const clearChat = () => {
+    Alert.alert(
+      'Clear Chat',
+      'Are you sure you want to delete all messages? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Clear',
+          style: 'destructive',
+          onPress: async () => {
+            setMessages([]);
+            await saveMessages([]);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={darkTheme.headerBackground} />
@@ -274,9 +307,15 @@ const App = () => {
           {!modelReady && !downloading && (
             <Text style={styles.statusBadge}>Initializing...</Text>
           )}
+          {messages.length > 0 && (
+            <TouchableOpacity onPress={clearChat} style={styles.clearBtn}>
+              <Text style={styles.clearText}>Clear</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         <FlatList
+          ref={flatListRef}
           data={messages}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
@@ -388,6 +427,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: darkTheme.statusText,
     fontWeight: '500',
+  },
+  clearBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: darkTheme.danger,
+  },
+  clearText: {
+    fontSize: 13,
+    color: '#fff',
+    fontWeight: '600',
   },
   messageList: {
     padding: 15,

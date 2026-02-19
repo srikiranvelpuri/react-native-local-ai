@@ -8,11 +8,8 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+# Enable dynamic frameworks but configure them properly for React Native compatibility
+use_frameworks! :linkage => :static
 
 target 'LAI' do
   config = use_native_modules!
@@ -23,6 +20,10 @@ target 'LAI' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # MediaPipe Tasks GenAI for LLM inference
+  pod 'MediaPipeTasksGenAI', '~> 0.10.14'
+  pod 'MediaPipeTasksGenAIC', '~> 0.10.14'
+
   post_install do |installer|
     react_native_post_install(
       installer,
@@ -30,5 +31,24 @@ target 'LAI' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # Fix MediaPipe C++ linking issues
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Fix MediaPipe pod conflicts by normalizing LDFLAGS
+        if target.name.start_with?('MediaPipeTasks')
+          # Remove device-specific LDFLAGS settings
+          config.build_settings.delete('OTHER_LDFLAGS[sdk=iphonesimulator*]')
+          config.build_settings.delete('OTHER_LDFLAGS[sdk=iphoneos*]')
+
+          # Normalize LDFLAGS
+          current_flags = config.build_settings['OTHER_LDFLAGS'] || ''
+          flags = current_flags.is_a?(Array) ? current_flags.dup : (current_flags.empty? ? [] : [current_flags])
+          flags << '-lc++' unless flags.include?('-lc++')
+          flags.delete('')
+          config.build_settings['OTHER_LDFLAGS'] = flags.uniq.reject(&:empty?)
+        end
+      end
+    end
   end
 end

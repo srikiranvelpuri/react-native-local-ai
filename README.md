@@ -2,6 +2,7 @@
 
 A React Native mobile application for running the Gemma 3N model locally on your device.
 
+
 ## Features
 
 - Local Gemma 3N model execution
@@ -9,7 +10,6 @@ A React Native mobile application for running the Gemma 3N model locally on your
 - Model download and management
 
 ## Preview
-
 ![](https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/appScreenShot.png)
 
 ## Prerequisites
@@ -29,31 +29,17 @@ yarn install
 
 ## Running the App
 
-### iOS
-
-1. Install pods:
-
-```bash
-cd ios && pod install && cd ..
-```
-
-2. Run the app:
-
-```bash
-npx react-native run-ios
-```
-
 ### Android
 
 ```bash
 npx react-native run-android
 ```
 
+
 ## Project Structure
 
 - `/android` - Android native code
-- `/ios` - iOS native code
-- `/src` - Application source code
+- `/src` - Application source code 
 
 ## Tech Stack
 
@@ -63,22 +49,3 @@ npx react-native run-android
 - React Native FS (File system)
 - React Native Image Picker
 - AsyncStorage
-- MediaPipe Tasks GenAI (iOS & Android) - For on-device LLM inference
-
-## Native Modules
-
-### GemmaModule
-
-The app includes a custom native module (`GemmaModule`) that interfaces with MediaPipe's LLM Inference API for both iOS and Android platforms.
-
-**Methods:**
-
-- `loadModel(modelPath)` - Loads a Gemma model from the specified file path
-- `generate(prompt)` - Generates text response from a prompt (with streaming)
-- `generateWithImage(prompt, imagePath)` - Generates text response with image context (multimodal)
-- `stopGeneration()` - Stops the current generation
-- `unloadModel()` - Unloads the model from memory
-
-**Events:**
-
-- `onGenerateToken` - Emitted for each token during streaming generation

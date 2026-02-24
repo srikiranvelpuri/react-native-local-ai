@@ -19,8 +19,10 @@ A cross-platform React Native mobile application for running Vision Language Mod
 
 ## Preview
 
-![](https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/android.png)
-![](https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/iOS.jpeg)
+<p align="center">
+  <img src="https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/android.png" height="500" width="45%"/>
+  <img src="https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/iOS.jpeg" height="500" />
+</p>
 
 ## Prerequisites
 

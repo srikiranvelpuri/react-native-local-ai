@@ -127,3 +127,11 @@ Tap the "Stop" button to cancel an ongoing generation.
 - AsyncStorage
 - **iOS**: FastVLM (MLX Swift, CoreML)
 - **Android**: Gemma (MediaPipe, TensorFlow Lite)
+
+## References
+
+### iOS
+- [Apple FastVLM](https://github.com/apple/ml-fastvlm) - Apple's Fast Vision Language Model implementation
+
+### Android
+- [MediaPipe LLM Inference for Android](https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/android) - Google's MediaPipe on-device LLM inference guide

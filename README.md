@@ -1,4 +1,4 @@
-# Local AI (LAI)
+# React Native Local AI (LAI)
 
 A cross-platform React Native mobile application for running Vision Language Models (VLMs) locally on your device.
 
@@ -20,8 +20,8 @@ A cross-platform React Native mobile application for running Vision Language Mod
 ## Preview
 
 <p align="center">
-  <img src="https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/android.png" height="500" width="45%"/>
-  <img src="https://github.com/srikiranvelpuri/react-native-gemma/blob/main/assets/iOS.jpeg" height="500" />
+  <img src="https://github.com/srikiranvelpuri/react-native-local-ai/blob/main/assets/android.png" height="500" width="45%"/>
+  <img src="https://github.com/srikiranvelpuri/react-native-local-ai/blob/main/assets/iOS.jpeg" height="500" />
 </p>
 
 ## Prerequisites

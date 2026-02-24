@@ -9,6 +9,38 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-LAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-LAI.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		4DAE466E2F4C4C5600C13F76 /* merges.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE465E2F4C4C5600C13F76 /* merges.txt */; };
+		4DAE466F2F4C4C5600C13F76 /* tokenizer.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46642F4C4C5600C13F76 /* tokenizer.json */; };
+		4DAE46702F4C4C5600C13F76 /* preprocessor_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46612F4C4C5600C13F76 /* preprocessor_config.json */; };
+		4DAE46712F4C4C5600C13F76 /* processor_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46622F4C4C5600C13F76 /* processor_config.json */; };
+		4DAE46722F4C4C5600C13F76 /* model.safetensors in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE465F2F4C4C5600C13F76 /* model.safetensors */; };
+		4DAE46732F4C4C5600C13F76 /* model.safetensors.index.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46602F4C4C5600C13F76 /* model.safetensors.index.json */; };
+		4DAE46742F4C4C5600C13F76 /* tokenizer_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46652F4C4C5600C13F76 /* tokenizer_config.json */; };
+		4DAE46752F4C4C5600C13F76 /* vocab.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46662F4C4C5600C13F76 /* vocab.json */; };
+		4DAE46762F4C4C5600C13F76 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE465C2F4C4C5600C13F76 /* config.json */; };
+		4DAE46772F4C4C5600C13F76 /* special_tokens_map.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE46632F4C4C5600C13F76 /* special_tokens_map.json */; };
+		4DAE46782F4C4C5600C13F76 /* added_tokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DAE465B2F4C4C5600C13F76 /* added_tokens.json */; };
+		4DAE46792F4C4C5600C13F76 /* fastvithd.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE465D2F4C4C5600C13F76 /* fastvithd.mlpackage */; };
+		4DAE467A2F4C4C5600C13F76 /* MediaProcessingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE466A2F4C4C5600C13F76 /* MediaProcessingExtensions.swift */; };
+		4DAE467B2F4C4C5600C13F76 /* FastVLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE46692F4C4C5600C13F76 /* FastVLM.swift */; };
+		4DAE467C2F4C4C5600C13F76 /* FastVLMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE466C2F4C4C5600C13F76 /* FastVLMModule.m */; };
+		4DAE467D2F4C4C5600C13F76 /* FastVLMModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE466D2F4C4C5600C13F76 /* FastVLMModule.swift */; };
+		4DAE46822F4C4E0F00C13F76 /* ComplexModule in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE46812F4C4E0F00C13F76 /* ComplexModule */; };
+		4DAE46842F4C4E0F00C13F76 /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE46832F4C4E0F00C13F76 /* Numerics */; };
+		4DAE46862F4C4E0F00C13F76 /* RealModule in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE46852F4C4E0F00C13F76 /* RealModule */; };
+		4DAE468B2F4C50F500C13F76 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE468A2F4C50F500C13F76 /* Transformers */; };
+		4DC540672F4C547F003DF7A8 /* MLX in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540662F4C547F003DF7A8 /* MLX */; };
+		4DC540692F4C547F003DF7A8 /* MLXFast in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540682F4C547F003DF7A8 /* MLXFast */; };
+		4DC5406B2F4C547F003DF7A8 /* MLXFFT in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC5406A2F4C547F003DF7A8 /* MLXFFT */; };
+		4DC5406D2F4C547F003DF7A8 /* MLXLinalg in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC5406C2F4C547F003DF7A8 /* MLXLinalg */; };
+		4DC5406F2F4C547F003DF7A8 /* MLXNN in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC5406E2F4C547F003DF7A8 /* MLXNN */; };
+		4DC540712F4C547F003DF7A8 /* MLXOptimizers in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540702F4C547F003DF7A8 /* MLXOptimizers */; };
+		4DC540732F4C547F003DF7A8 /* MLXRandom in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540722F4C547F003DF7A8 /* MLXRandom */; };
+		4DC540752F4C547F003DF7A8 /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540742F4C547F003DF7A8 /* MLXEmbedders */; };
+		4DC540772F4C547F003DF7A8 /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540762F4C547F003DF7A8 /* MLXLLM */; };
+		4DC540792F4C547F003DF7A8 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC540782F4C547F003DF7A8 /* MLXLMCommon */; };
+		4DC5407B2F4C547F003DF7A8 /* MLXMNIST in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC5407A2F4C547F003DF7A8 /* MLXMNIST */; };
+		4DC5407D2F4C547F003DF7A8 /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 4DC5407C2F4C547F003DF7A8 /* MLXVLM */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A6EF85DA2BC9712F8B49335D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
@@ -20,6 +52,24 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = LAI/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = LAI/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-LAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LAI.debug.xcconfig"; path = "Target Support Files/Pods-LAI/Pods-LAI.debug.xcconfig"; sourceTree = "<group>"; };
+		4DAE465B2F4C4C5600C13F76 /* added_tokens.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = added_tokens.json; sourceTree = "<group>"; };
+		4DAE465C2F4C4C5600C13F76 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		4DAE465D2F4C4C5600C13F76 /* fastvithd.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = fastvithd.mlpackage; sourceTree = "<group>"; };
+		4DAE465E2F4C4C5600C13F76 /* merges.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = merges.txt; sourceTree = "<group>"; };
+		4DAE465F2F4C4C5600C13F76 /* model.safetensors */ = {isa = PBXFileReference; lastKnownFileType = file; path = model.safetensors; sourceTree = "<group>"; };
+		4DAE46602F4C4C5600C13F76 /* model.safetensors.index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = model.safetensors.index.json; sourceTree = "<group>"; };
+		4DAE46612F4C4C5600C13F76 /* preprocessor_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = preprocessor_config.json; sourceTree = "<group>"; };
+		4DAE46622F4C4C5600C13F76 /* processor_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = processor_config.json; sourceTree = "<group>"; };
+		4DAE46632F4C4C5600C13F76 /* special_tokens_map.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = special_tokens_map.json; sourceTree = "<group>"; };
+		4DAE46642F4C4C5600C13F76 /* tokenizer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tokenizer.json; sourceTree = "<group>"; };
+		4DAE46652F4C4C5600C13F76 /* tokenizer_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tokenizer_config.json; sourceTree = "<group>"; };
+		4DAE46662F4C4C5600C13F76 /* vocab.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = vocab.json; sourceTree = "<group>"; };
+		4DAE46682F4C4C5600C13F76 /* FastVLM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastVLM.h; sourceTree = "<group>"; };
+		4DAE46692F4C4C5600C13F76 /* FastVLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastVLM.swift; sourceTree = "<group>"; };
+		4DAE466A2F4C4C5600C13F76 /* MediaProcessingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaProcessingExtensions.swift; sourceTree = "<group>"; };
+		4DAE466C2F4C4C5600C13F76 /* FastVLMModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastVLMModule.m; sourceTree = "<group>"; };
+		4DAE466D2F4C4C5600C13F76 /* FastVLMModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastVLMModule.swift; sourceTree = "<group>"; };
+		4DAE467E2F4C4C5700C13F76 /* LAI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LAI-Bridging-Header.h"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-LAI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LAI.release.xcconfig"; path = "Target Support Files/Pods-LAI/Pods-LAI.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = LAI/AppDelegate.swift; sourceTree = "<group>"; };
@@ -32,7 +82,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DC540772F4C547F003DF7A8 /* MLXLLM in Frameworks */,
+				4DC540672F4C547F003DF7A8 /* MLX in Frameworks */,
+				4DC540752F4C547F003DF7A8 /* MLXEmbedders in Frameworks */,
+				4DAE46862F4C4E0F00C13F76 /* RealModule in Frameworks */,
+				4DC5407B2F4C547F003DF7A8 /* MLXMNIST in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-LAI.a in Frameworks */,
+				4DAE468B2F4C50F500C13F76 /* Transformers in Frameworks */,
+				4DC540692F4C547F003DF7A8 /* MLXFast in Frameworks */,
+				4DAE46842F4C4E0F00C13F76 /* Numerics in Frameworks */,
+				4DC540712F4C547F003DF7A8 /* MLXOptimizers in Frameworks */,
+				4DC540732F4C547F003DF7A8 /* MLXRandom in Frameworks */,
+				4DC540792F4C547F003DF7A8 /* MLXLMCommon in Frameworks */,
+				4DC5407D2F4C547F003DF7A8 /* MLXVLM in Frameworks */,
+				4DAE46822F4C4E0F00C13F76 /* ComplexModule in Frameworks */,
+				4DC5406D2F4C547F003DF7A8 /* MLXLinalg in Frameworks */,
+				4DC5406F2F4C547F003DF7A8 /* MLXNN in Frameworks */,
+				4DC5406B2F4C547F003DF7A8 /* MLXFFT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,11 +108,15 @@
 		13B07FAE1A68108700A75B9A /* LAI */ = {
 			isa = PBXGroup;
 			children = (
+				4DAE466B2F4C4C5600C13F76 /* FastVLM */,
+				4DAE466C2F4C4C5600C13F76 /* FastVLMModule.m */,
+				4DAE466D2F4C4C5600C13F76 /* FastVLMModule.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				4DAE467E2F4C4C5700C13F76 /* LAI-Bridging-Header.h */,
 			);
 			name = LAI;
 			sourceTree = "<group>";
@@ -58,6 +128,36 @@
 				5DCACB8F33CDC322A6C60F78 /* libPods-LAI.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4DAE46672F4C4C5600C13F76 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				4DAE465B2F4C4C5600C13F76 /* added_tokens.json */,
+				4DAE465C2F4C4C5600C13F76 /* config.json */,
+				4DAE465D2F4C4C5600C13F76 /* fastvithd.mlpackage */,
+				4DAE465E2F4C4C5600C13F76 /* merges.txt */,
+				4DAE465F2F4C4C5600C13F76 /* model.safetensors */,
+				4DAE46602F4C4C5600C13F76 /* model.safetensors.index.json */,
+				4DAE46612F4C4C5600C13F76 /* preprocessor_config.json */,
+				4DAE46622F4C4C5600C13F76 /* processor_config.json */,
+				4DAE46632F4C4C5600C13F76 /* special_tokens_map.json */,
+				4DAE46642F4C4C5600C13F76 /* tokenizer.json */,
+				4DAE46652F4C4C5600C13F76 /* tokenizer_config.json */,
+				4DAE46662F4C4C5600C13F76 /* vocab.json */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		4DAE466B2F4C4C5600C13F76 /* FastVLM */ = {
+			isa = PBXGroup;
+			children = (
+				4DAE46672F4C4C5600C13F76 /* model */,
+				4DAE46682F4C4C5600C13F76 /* FastVLM.h */,
+				4DAE46692F4C4C5600C13F76 /* FastVLM.swift */,
+				4DAE466A2F4C4C5600C13F76 /* MediaProcessingExtensions.swift */,
+			);
+			path = FastVLM;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -128,10 +228,13 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 2620;
 					};
 				};
 			};
@@ -144,6 +247,11 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */,
+				4DAE46892F4C50F500C13F76 /* XCRemoteSwiftPackageReference "swift-transformers" */,
+				4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -160,6 +268,17 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4DAE466E2F4C4C5600C13F76 /* merges.txt in Resources */,
+				4DAE466F2F4C4C5600C13F76 /* tokenizer.json in Resources */,
+				4DAE46702F4C4C5600C13F76 /* preprocessor_config.json in Resources */,
+				4DAE46712F4C4C5600C13F76 /* processor_config.json in Resources */,
+				4DAE46722F4C4C5600C13F76 /* model.safetensors in Resources */,
+				4DAE46732F4C4C5600C13F76 /* model.safetensors.index.json in Resources */,
+				4DAE46742F4C4C5600C13F76 /* tokenizer_config.json in Resources */,
+				4DAE46752F4C4C5600C13F76 /* vocab.json in Resources */,
+				4DAE46762F4C4C5600C13F76 /* config.json in Resources */,
+				4DAE46772F4C4C5600C13F76 /* special_tokens_map.json in Resources */,
+				4DAE46782F4C4C5600C13F76 /* added_tokens.json in Resources */,
 				A6EF85DA2BC9712F8B49335D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +366,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
+				4DAE46792F4C4C5600C13F76 /* fastvithd.mlpackage in Sources */,
+				4DAE467A2F4C4C5600C13F76 /* MediaProcessingExtensions.swift in Sources */,
+				4DAE467B2F4C4C5600C13F76 /* FastVLM.swift in Sources */,
+				4DAE467C2F4C4C5600C13F76 /* FastVLMModule.m in Sources */,
+				4DAE467D2F4C4C5600C13F76 /* FastVLMModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,9 +384,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = F3G3LP4437;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LAI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -275,8 +402,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LAI;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "LAI-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -288,8 +421,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = F3G3LP4437;
 				INFOPLIST_FILE = LAI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +438,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LAI;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "LAI-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -473,6 +615,124 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4DAE46802F4C4E0F00C13F76 /* XCRemoteSwiftPackageReference "swift-numerics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-numerics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
+		4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 0.25.6;
+			};
+		};
+		4DAE46892F4C50F500C13F76 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-transformers";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.24;
+			};
+		};
+		4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.21.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4DAE46812F4C4E0F00C13F76 /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46802F4C4E0F00C13F76 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		4DAE46832F4C4E0F00C13F76 /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46802F4C4E0F00C13F76 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		4DAE46852F4C4E0F00C13F76 /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46802F4C4E0F00C13F76 /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
+		};
+		4DAE468A2F4C50F500C13F76 /* Transformers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46892F4C50F500C13F76 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Transformers;
+		};
+		4DC540662F4C547F003DF7A8 /* MLX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLX;
+		};
+		4DC540682F4C547F003DF7A8 /* MLXFast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFast;
+		};
+		4DC5406A2F4C547F003DF7A8 /* MLXFFT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFFT;
+		};
+		4DC5406C2F4C547F003DF7A8 /* MLXLinalg */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXLinalg;
+		};
+		4DC5406E2F4C547F003DF7A8 /* MLXNN */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXNN;
+		};
+		4DC540702F4C547F003DF7A8 /* MLXOptimizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXOptimizers;
+		};
+		4DC540722F4C547F003DF7A8 /* MLXRandom */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE46882F4C4FFC00C13F76 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXRandom;
+		};
+		4DC540742F4C547F003DF7A8 /* MLXEmbedders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXEmbedders;
+		};
+		4DC540762F4C547F003DF7A8 /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLLM;
+		};
+		4DC540782F4C547F003DF7A8 /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+		4DC5407A2F4C547F003DF7A8 /* MLXMNIST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXMNIST;
+		};
+		4DC5407C2F4C547F003DF7A8 /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DAE468C2F4C513200C13F76 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

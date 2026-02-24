@@ -11,9 +11,11 @@ import {
   Animated,
   Keyboard,
   Alert,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { GemmaInference } from './src/inference/GemmaInference';
+import { VLMInference } from './src/inference';
 import { DownloadModal } from './src/components/DownloadModal';
 import {
   MODEL_PATH,
@@ -50,7 +52,7 @@ const ThinkingIndicator = () => {
             duration: 400,
             useNativeDriver: true,
           }),
-        ])
+        ]),
       );
     };
 
@@ -116,26 +118,23 @@ const App = () => {
 
   const initModel = useCallback(async () => {
     try {
-      console.log('Initializing model...');
-      const modelExists = await checkModelExists();
+      console.log('📱 App: Initializing model for platform:', Platform.OS);
 
-      if (!modelExists) {
-        console.log('Model not found, starting download...');
-        const downloaded = await handleDownload();
-        if (!downloaded) {
-          console.error('Model download failed');
-          return;
+      // Check if model download is needed (Android only)
+      if (Platform.OS !== 'ios') {
+        const modelExists = await checkModelExists();
+        if (!modelExists) {
+          const downloaded = await handleDownload();
+          if (!downloaded) {
+            return;
+          }
         }
       }
 
-      if (!MODEL_PATH) throw new Error('MODEL_PATH is null');
-
-      console.log('Loading model into inference engine...');
-      await GemmaInference.initialize(MODEL_PATH);
+      // Initialize VLM (auto-detects platform and uses correct implementation)
+      await VLMInference.initialize({ modelPath: MODEL_PATH });
       setModelReady(true);
-      console.log('Model ready!');
     } catch (error) {
-      console.error('Model initialization failed:', error);
       const errorMessage = handleNetworkError(error);
       setDownloadError(errorMessage);
       setModelReady(false);
@@ -177,6 +176,16 @@ const App = () => {
     if (!input.trim() && !selectedImage) return;
     if (!modelReady) return;
 
+    // For iOS, image is mandatory
+    if (Platform.OS === 'ios' && !selectedImage) {
+      Alert.alert(
+        'Image Required',
+        'Please attach an image before sending a message on iOS.',
+        [{ text: 'OK' }],
+      );
+      return;
+    }
+
     // Dismiss keyboard
     Keyboard.dismiss();
 
@@ -210,10 +219,9 @@ const App = () => {
     setMessages(messagesWithAI);
 
     try {
-      await GemmaInference.generateStreaming(
+      await VLMInference.generateStreaming(
         promptText,
         (token: string) => {
-          // Append each token as it arrives
           currentText += token;
           setMessages(prev => {
             const updated = [...prev];
@@ -227,24 +235,25 @@ const App = () => {
             return updated;
           });
         },
-        imageUri
+        imageUri,
       );
 
-      // Save final messages after streaming completes
-      const finalMessages = [...updatedMessages, { ...aiMsg, text: currentText }];
+      const finalMessages = [
+        ...updatedMessages,
+        { ...aiMsg, text: currentText },
+      ];
       await saveMessages(finalMessages);
     } catch (error) {
-      console.error('Generation failed:', error);
-
-      // Check if this was a user cancellation
-      const isCancelled = error instanceof Error && error.message.includes('CANCELLED');
+      const isCancelled =
+        error instanceof Error && error.message.includes('CANCELLED');
 
       if (isCancelled && currentText) {
-        // Keep the partial response when user stops generation
-        const finalMessages = [...updatedMessages, { ...aiMsg, text: currentText }];
+        const finalMessages = [
+          ...updatedMessages,
+          { ...aiMsg, text: currentText },
+        ];
         await saveMessages(finalMessages);
       } else {
-        // Remove the placeholder message on real errors
         setMessages(updatedMessages);
       }
     } finally {
@@ -259,10 +268,10 @@ const App = () => {
 
   const stopGeneration = async () => {
     try {
-      await GemmaInference.stopGeneration();
+      await VLMInference.stopGeneration();
       setLoading(false);
-    } catch (error) {
-      console.error('Failed to stop generation:', error);
+    } catch {
+      // Silent fail
     }
   };
 
@@ -284,13 +293,16 @@ const App = () => {
           },
         },
       ],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={darkTheme.headerBackground} />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={darkTheme.headerBackground}
+      />
       <DownloadModal
         visible={downloading || downloadError !== null}
         downloading={downloading}
@@ -301,9 +313,15 @@ const App = () => {
         onRetry={retryDownload}
       />
 
-      <View style={styles.main}>
+      <KeyboardAvoidingView
+        style={styles.main}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+      >
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>LAI - Gemma 3N E2B</Text>
+          <Text style={styles.headerTitle}>
+            LAI - {VLMInference.getModelName()}
+          </Text>
           {!modelReady && !downloading && (
             <Text style={styles.statusBadge}>Initializing...</Text>
           )}
@@ -339,7 +357,9 @@ const App = () => {
           )}
           ListFooterComponent={
             loading ? (
-              <View style={[styles.message, styles.aiMsg, styles.thinkingMessage]}>
+              <View
+                style={[styles.message, styles.aiMsg, styles.thinkingMessage]}
+              >
                 <ThinkingIndicator />
               </View>
             ) : null
@@ -361,7 +381,7 @@ const App = () => {
               style={styles.input}
               value={input}
               onChangeText={setInput}
-              placeholder="Message Gemma..."
+              placeholder={`Message ...`}
               placeholderTextColor={darkTheme.textPlaceholder}
               multiline
               editable={modelReady}
@@ -374,19 +394,13 @@ const App = () => {
               />
             </TouchableOpacity>
             {loading ? (
-              <TouchableOpacity
-                onPress={stopGeneration}
-                style={styles.stopBtn}
-              >
+              <TouchableOpacity onPress={stopGeneration} style={styles.stopBtn}>
                 <Text style={styles.stopText}>Stop</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 onPress={sendMessage}
-                style={[
-                  styles.sendBtn,
-                  !modelReady && styles.sendBtnDisabled,
-                ]}
+                style={[styles.sendBtn, !modelReady && styles.sendBtnDisabled]}
                 disabled={!modelReady}
               >
                 <Text style={styles.sendText}>Send</Text>
@@ -394,7 +408,7 @@ const App = () => {
             )}
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };

@@ -9,9 +9,10 @@ const AUTH = 'DGcJdsXFviAtKytYDLoaFvrmdUAyMYAHca';
 // Use external storage for persistent model storage across app updates
 // On Android: Use ExternalDirectoryPath (app-specific external storage, survives updates)
 // On iOS: falls back to DocumentDirectory (iOS apps are sandboxed)
-const BASE_PATH = Platform.OS === 'android'
-  ? RNFS.ExternalDirectoryPath
-  : RNFS.DocumentDirectoryPath;
+const BASE_PATH =
+  Platform.OS === 'android'
+    ? RNFS.ExternalDirectoryPath
+    : RNFS.DocumentDirectoryPath;
 const MODELS_PATH = `${BASE_PATH}/.laiModels`;
 const MODEL_PATH = `${MODELS_PATH}/${MODEL_NAME}`;
 
@@ -31,6 +32,7 @@ export const requestStoragePermission = async (): Promise<boolean> => {
 
 export const checkModelExists = async (): Promise<boolean> => {
   try {
+    if (Platform.OS === 'ios') return true;
     const exists = await RNFS.exists(MODEL_PATH);
     console.log(`Model exists at ${MODEL_PATH}: ${exists}`);
     return exists;
@@ -41,13 +43,15 @@ export const checkModelExists = async (): Promise<boolean> => {
 };
 
 export const downloadModel = async (
-  onProgress?: (progress: DownloadProgress) => void
+  onProgress?: (progress: DownloadProgress) => void,
 ): Promise<boolean> => {
   try {
     // Request storage permission first
     const hasPermission = await requestStoragePermission();
     if (!hasPermission) {
-      throw new Error('Storage permission denied. Please grant permission to download the model.');
+      throw new Error(
+        'Storage permission denied. Please grant permission to download the model.',
+      );
     }
 
     const dirExists = await RNFS.exists(MODELS_PATH);
@@ -98,10 +102,13 @@ export const handleNetworkError = (error: unknown): string => {
   if (error instanceof Error) {
     errorMessage = error.message;
     // Handle network-specific errors
-    if (errorMessage.includes('Network request failed') ||
-        errorMessage.includes('Unable to resolve host') ||
-        errorMessage.includes('timeout')) {
-      errorMessage = 'No internet connection. Please check your network and try again.';
+    if (
+      errorMessage.includes('Network request failed') ||
+      errorMessage.includes('Unable to resolve host') ||
+      errorMessage.includes('timeout')
+    ) {
+      errorMessage =
+        'No internet connection. Please check your network and try again.';
     }
   }
 

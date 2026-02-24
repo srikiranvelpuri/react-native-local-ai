@@ -22,6 +22,9 @@ DerivedData
 *.xcuserstate
 **/.xcode.env.local
 
+ios/FastVLM/model
+ios/app/*
+
 # Android/IntelliJ
 #
 build/

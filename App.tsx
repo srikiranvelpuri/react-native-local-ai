@@ -8,7 +8,6 @@ import {
   Image,
   StyleSheet,
   StatusBar,
-  Animated,
   Keyboard,
   Alert,
   Platform,
@@ -17,6 +16,8 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { VLMInference } from './src/inference';
 import { DownloadModal } from './src/components/DownloadModal';
+import { ThinkingIndicator } from './src/components/ThinkingIndicator';
+import { ChatBubble } from './src/components/ChatBubble';
 import {
   MODEL_PATH,
   checkModelExists,
@@ -31,54 +32,6 @@ import {
 import { darkTheme } from './src/utils/theme';
 
 const cameraIcon = require('./assets/camera.png');
-
-const ThinkingIndicator = () => {
-  const opacity1 = useRef(new Animated.Value(0.3)).current;
-  const opacity2 = useRef(new Animated.Value(0.3)).current;
-  const opacity3 = useRef(new Animated.Value(0.3)).current;
-
-  useEffect(() => {
-    const animate = (animValue: Animated.Value, delay: number) => {
-      return Animated.loop(
-        Animated.sequence([
-          Animated.delay(delay),
-          Animated.timing(animValue, {
-            toValue: 1,
-            duration: 400,
-            useNativeDriver: true,
-          }),
-          Animated.timing(animValue, {
-            toValue: 0.3,
-            duration: 400,
-            useNativeDriver: true,
-          }),
-        ]),
-      );
-    };
-
-    const anim1 = animate(opacity1, 0);
-    const anim2 = animate(opacity2, 200);
-    const anim3 = animate(opacity3, 400);
-
-    anim1.start();
-    anim2.start();
-    anim3.start();
-
-    return () => {
-      anim1.stop();
-      anim2.stop();
-      anim3.stop();
-    };
-  }, [opacity1, opacity2, opacity3]);
-
-  return (
-    <View style={styles.thinkingContainer}>
-      <Animated.View style={[styles.thinkingDot, { opacity: opacity1 }]} />
-      <Animated.View style={[styles.thinkingDot, { opacity: opacity2 }]} />
-      <Animated.View style={[styles.thinkingDot, { opacity: opacity3 }]} />
-    </View>
-  );
-};
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -316,7 +269,6 @@ const App = () => {
       <KeyboardAvoidingView
         style={styles.main}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
@@ -336,30 +288,10 @@ const App = () => {
           ref={flatListRef}
           data={messages}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.message,
-                item.sender === 'user' ? styles.userMsg : styles.aiMsg,
-              ]}
-            >
-              {item.image && (
-                <Image source={{ uri: item.image }} style={styles.msgImage} />
-              )}
-              <Text
-                style={
-                  item.sender === 'user' ? styles.userText : styles.msgText
-                }
-              >
-                {item.text}
-              </Text>
-            </View>
-          )}
+          renderItem={({ item }) => <ChatBubble message={item} />}
           ListFooterComponent={
             loading ? (
-              <View
-                style={[styles.message, styles.aiMsg, styles.thinkingMessage]}
-              >
+              <View style={styles.thinkingMessage}>
                 <ThinkingIndicator />
               </View>
             ) : null
@@ -381,7 +313,7 @@ const App = () => {
               style={styles.input}
               value={input}
               onChangeText={setInput}
-              placeholder={`Message ...`}
+              placeholder="Message ..."
               placeholderTextColor={darkTheme.textPlaceholder}
               multiline
               editable={modelReady}
@@ -456,36 +388,6 @@ const styles = StyleSheet.create({
   messageList: {
     padding: 15,
     paddingBottom: 20,
-  },
-  message: {
-    maxWidth: '85%',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  userMsg: {
-    alignSelf: 'flex-end',
-    backgroundColor: darkTheme.userMessage,
-  },
-  aiMsg: {
-    alignSelf: 'flex-start',
-    backgroundColor: darkTheme.aiMessage,
-  },
-  msgText: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: darkTheme.textPrimary,
-  },
-  userText: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: darkTheme.textPrimary,
-  },
-  msgImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 8,
-    marginBottom: 8,
   },
   inputContainer: {
     borderTopWidth: 1,
@@ -562,19 +464,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   thinkingMessage: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  thinkingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  thinkingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: darkTheme.textSecondary,
+    maxWidth: '85%',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    alignSelf: 'flex-start',
+    backgroundColor: darkTheme.aiMessage,
   },
 });
 
